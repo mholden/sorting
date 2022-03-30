@@ -1,126 +1,101 @@
-#include "include/sorting.h"
-#include "include/swap.h"
+#include <stddef.h>
+#include <stdint.h>
+#include <string.h>
 #include <stdio.h>
 
-/*
- * Heap Sort.
- */
+#include "sorting.h"
+#include "utils.h"
 
-void upheap(int *heap, int index){
-	int child_ind, parent_ind;
-
-	if(index == 0) return;
-
-	child_ind = index;
-	parent_ind = (child_ind - 1) / 2;
-
-	if(heap[child_ind] < heap[parent_ind]){
-		swap(&heap[child_ind], &heap[parent_ind]);
-		upheap(heap, parent_ind);
-	}
-	else return;
-}
-
-void downheap(int *heap, int index, size_t size){
-	int parent_ind, lch_ind, rch_ind;
-
-	if(size == 0) return;
-
-	parent_ind = index;
-	lch_ind = (2 * parent_ind) + 1;
-	rch_ind = (2 * parent_ind) + 2;
-
-	if(lch_ind > (size - 1)) return; /* We have no children */
-	else if(rch_ind > (size - 1)){ /* We only have a left child */
-		if(heap[parent_ind] > heap[lch_ind]){
-			swap(&heap[parent_ind], &heap[lch_ind]);
-		}
-		return;
-	}
-
-	/* We have two children */
-	if(heap[parent_ind] > heap[lch_ind]){
-		if(heap[parent_ind] > heap[rch_ind]){ 
-			/* We're larger than both children */
-			if(heap[lch_ind] < heap[rch_ind]){
-				swap(&heap[lch_ind], &heap[parent_ind]);
-				downheap(heap, lch_ind, size);
-			}
-			else{
-				swap(&heap[rch_ind], &heap[parent_ind]);
-                                downheap(heap, rch_ind, size);
-			}
-		}
-		else{ /* We're larger than only our left child */
-			swap(&heap[lch_ind], &heap[parent_ind]);
-			downheap(heap, lch_ind, size);
-		}
-	}
-	else if(heap[parent_ind] > heap[rch_ind]){
-		/* We're larger than only our right child */
-		swap(&heap[rch_ind], &heap[parent_ind]);
-		downheap(heap, rch_ind, size);
-	}
-
-	/* We're smaller than both our children */
-
-	return;
-}
-
-void heap_sort(int *array, size_t n){
-	/*
-	 * Okay, heap is represented as an array.
-	 * 	index n has left child 2n+1, right child 2n+2
-	 *	index n has parent (n-1)/2
-	 *
-	 * Really just need to make a heap, and then empty the
-	 * heap. To make heap, need upheap. To empty, need
-	 * downheap.
-	 *
-	 * Upheap:
-	 * 	insert at end of 'complete tree'/array
-	 * 	look at parent, if < parent, swap
-	 * 	this can/should be recursive
-	 *	stop at root or when parent < you
-	 *
-	 * Downheap: 
-	 * 	remove root node, and replace it with end of
-	 *	'complete tree'/array.
-	 * 	look at children:
-	 *	  if > both, swap with whichever is smallest
-	 *	  else swap with one that is < you
-	 *	  stop when no children or both > you
-	 */
-	int *scratch;
-	int curr_size, i;
-	
-	scratch = malloc(n * sizeof(int));
-	if(scratch == NULL){
-		printf("Heap sort: Out of memory?\n");
-		return;
-	}
-
-	curr_size = 0;
-
-	/* Build heap */
-	i = 0;
-	while(i < n){
-		scratch[curr_size++] = array[i];
-		upheap(scratch, curr_size - 1);
-		i++;
-	}
-
-	/* Empty heap */
-	i = 0;
-	while(i < n){
-		array[i] = scratch[0];
-		swap(&scratch[0], &scratch[curr_size - 1]);
-		curr_size--;
-		downheap(scratch, 0, curr_size);
-		i++;
-	}
-
-	free(scratch);
-
+//
+// copied and modified from heap implementation in
+// data_structs project so that we can do this in place:
+//
+static void heap_downheap(uint8_t *heap, size_t ind, size_t nelements, size_t dsz, sorting_ops_t *ops) {
+    size_t cind1, cind2, scind = 0;
+    uint8_t *parent, *child1 = NULL, *child2 = NULL, *swap_child;
+    
+    if (nelements == 0)
         return;
+    
+    cind1 = (ind * 2) + 1;
+    cind2 = cind1 + 1;
+    
+    parent = heap + (ind * dsz);
+    if (cind1 < nelements)
+        child1 = heap + (cind1 * dsz);
+    if (cind2 < nelements)
+        child2 = heap + (cind2 * dsz);
+    
+    if (child1 == NULL && child2 == NULL)
+        return;
+    
+    if (child1 == NULL)
+        scind = cind2;
+    else if (child2 == NULL)
+        scind = cind1;
+    
+    if (!scind) { // neither child1 nor child2 are NULL
+        if (ops->compare_fn(child1, child2) > 0)
+            scind = cind1;
+        else
+            scind = cind2;
+    }
+    
+    swap_child = heap + (scind * dsz);
+    
+    if (ops->compare_fn(swap_child, parent) > 0) { // swap and continue
+        swap(swap_child, parent, dsz);
+        heap_downheap(heap, scind, nelements, dsz, ops);
+    }
+    
+    return;
+}
+
+static void heap_upheap(uint8_t *heap, size_t ind, size_t dsz, sorting_ops_t *ops) {
+    size_t pind;
+    uint8_t *child, *parent;
+    
+    if (ind == 0)
+        goto out;
+    
+    pind = (ind - 1) / 2;
+    child = heap + (ind * dsz);
+    parent = heap + (pind * dsz);
+    
+    if (ops->compare_fn(parent, child) < 0) { // swap and continue
+        swap(parent, child, dsz);
+        if (pind)
+            heap_upheap(heap, pind, dsz, ops);
+    }
+    
+out:
+    return;
+}
+
+int heap_sort(void *data, size_t dsz, size_t nelements, sorting_ops_t *ops) {
+    uint8_t *heap;
+    
+    heap = (uint8_t *)data;
+    for (size_t i = 1; i < nelements; i++) {
+        //
+        // 'insert' all elements into the heap. we 'fake' the
+        // heap size here, maintaining a heap between indices
+        // 0 and i until the entire data set is a heap
+        //
+        heap_upheap(heap, i, dsz, ops);
+    }
+    for (size_t i = 0; i < nelements; i++) {
+        //
+        // the heap is a max heap. we want the data sorted
+        // min to max. so pop the heap top and put it at the
+        // end of our data (by swapping it with the last element),
+        // and then downheap on that last element (which is
+        // now the heap top) to make sure the heap maintains
+        // its properties
+        //
+        swap(heap, heap + ((nelements - i - 1) * dsz), dsz);
+        heap_downheap(heap, 0, (nelements - i - 1), dsz, ops);
+    }
+    
+    return 0;
 }

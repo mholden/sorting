@@ -1,23 +1,21 @@
-#include "include/sorting.h"
-#include "include/swap.h"
+#include <stdint.h>
 
-/*
- * Insertion Sort.
- */
+#include "sorting.h"
+#include "utils.h"
 
-void insertion_sort(int *array, size_t n){
-	int i, j;
-
-	for(i=1; i<n; i++){
-		j = i;
-		while(j > 0){
-			if(array[j] < array[j - 1]){
-				swap(&array[j], &array[j - 1]);
-				j--;
-			}
-			else break;
-		}
-	}
-
-	return;
+int insertion_sort(void *data, size_t dsz, size_t nelements, sorting_ops_t *ops) {
+    uint8_t *curr, *comp;
+    
+    for (int i = 1; i < nelements; i++) {
+        curr = (uint8_t *)data + (i * dsz);
+        for (int j = i - 1; j >= 0; j--) {
+            comp = (uint8_t *)data + (j * dsz);
+            if (ops->compare_fn(curr, comp) >= 0)
+                break;
+            swap(curr, comp, dsz);
+            curr = comp;
+        }
+    }
+    
+    return 0;
 }

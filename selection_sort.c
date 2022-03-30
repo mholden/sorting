@@ -1,25 +1,26 @@
-#include "include/sorting.h"
-#include "include/swap.h"
+#include <stdint.h>
 
-/*
- * Selection Sort, recursive implementation.
- */
+#include "sorting.h"
+#include "utils.h"
 
-void selection_sort(int *array, size_t n){
-	int min_index, i;
-
-	if(n == 1) return;
-
-	min_index = 0;
-	i = 1;
-	while(i < n){
-		if(array[i] < array[min_index]) min_index = i;
-		i++;
-	}
-
-	if(min_index != 0) swap(&array[min_index], &array[0]);
-
-	selection_sort(array + 1, n - 1);
-
-	return;
+int selection_sort(void *data, size_t dsz, size_t nelements, sorting_ops_t *ops) {
+    uint8_t *curr, *min, *comp;
+    int err;
+    
+    for (int i = 0; i < nelements; i++) {
+        curr = ((uint8_t *)data) + (i * dsz);
+        min = curr;
+        for (int j = i + 1; j < nelements; j++) {
+            comp = ((uint8_t *)data) + (j * dsz);
+            if (ops->compare_fn(comp, min) < 0)
+                min = comp;
+        }
+        if (min != curr)
+            swap(min, curr, dsz);
+    }
+    
+    return 0;
+    
+error_out:
+    return err;
 }

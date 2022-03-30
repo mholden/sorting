@@ -1,20 +1,18 @@
 #ifndef _SORTING_H_
 #define _SORTING_H_
 
-#include<stdlib.h>
+#include <stddef.h>
 
-/*
- * Definitions for our sorts.
- */
+typedef struct sorting_ops {
+    int (*compare_fn)(void *data1, void *data2);
+    void (*dump_data_fn)(void *data, size_t nelements);
+} sorting_ops_t;
 
-#define TEST_NAME_LEN 20
+int selection_sort(void *data, size_t dsz, size_t nelements, sorting_ops_t *ops);
+int insertion_sort(void *data, size_t dsz, size_t nelements, sorting_ops_t *ops);
+int merge_sort(void *data, size_t dsz, size_t nelements, sorting_ops_t *ops);
+int heap_sort(void *data, size_t dsz, size_t nelements, sorting_ops_t *ops);
+int tree_sort(void *data, size_t dsz, size_t nelements, sorting_ops_t *ops);
+int quick_sort(void *data, size_t dsz, size_t nelements, sorting_ops_t *ops);
 
-void bubble_sort(int *array, size_t n);
-void insertion_sort(int *array, size_t n);
-void selection_sort(int *array, size_t n);
-void heap_sort(int *array, size_t n);
-void merge_sort(int *array, size_t n);
-void quick_sort(int *array, size_t n);
-void hash_sort(int *array, size_t n);
-
-#endif /* _SORTING_H_ */
+#endif // _SORTING_H_
