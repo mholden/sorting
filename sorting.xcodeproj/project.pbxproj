@@ -31,23 +31,6 @@
 
 /* Begin PBXFileReference section */
 		2A91A6F527F34174001F02C8 /* sorting */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = sorting; sourceTree = BUILT_PRODUCTS_DIR; };
-		2A91A70027F34225001F02C8 /* hash_sort.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = hash_sort.c; sourceTree = "<group>"; };
-		2A91A70127F34225001F02C8 /* verification.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = verification.c; sourceTree = "<group>"; };
-		2A91A70227F34225001F02C8 /* bubble_sort.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = bubble_sort.c; sourceTree = "<group>"; };
-		2A91A70327F34225001F02C8 /* merge_sort.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = merge_sort.c; sourceTree = "<group>"; };
-		2A91A70427F34225001F02C8 /* heap_sort.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = heap_sort.c; sourceTree = "<group>"; };
-		2A91A70627F34225001F02C8 /* swap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = swap.h; sourceTree = "<group>"; };
-		2A91A70727F34225001F02C8 /* sorting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sorting.h; sourceTree = "<group>"; };
-		2A91A70827F34225001F02C8 /* verification.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = verification.h; sourceTree = "<group>"; };
-		2A91A70927F34225001F02C8 /* sort_results.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = sort_results.txt; sourceTree = "<group>"; };
-		2A91A70A27F34225001F02C8 /* int_sort */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = int_sort; sourceTree = "<group>"; };
-		2A91A70B27F34225001F02C8 /* quick_sort.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = quick_sort.c; sourceTree = "<group>"; };
-		2A91A70C27F34225001F02C8 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
-		2A91A70D27F34225001F02C8 /* int_sort.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; path = int_sort.dSYM; sourceTree = "<group>"; };
-		2A91A70E27F34225001F02C8 /* swap.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = swap.c; sourceTree = "<group>"; };
-		2A91A70F27F34225001F02C8 /* selection_sort.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = selection_sort.c; sourceTree = "<group>"; };
-		2A91A71027F34225001F02C8 /* test_sorts.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = test_sorts.sh; sourceTree = "<group>"; };
-		2A91A71127F34225001F02C8 /* insertion_sort.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = insertion_sort.c; sourceTree = "<group>"; };
 		2A91A71E27F34D29001F02C8 /* sorting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sorting.h; sourceTree = "<group>"; };
 		2A91A71F27F34D29001F02C8 /* selection_sort.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = selection_sort.c; sourceTree = SOURCE_ROOT; };
 		2A91A72127F34D29001F02C8 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
@@ -100,41 +83,8 @@
 				2A91A72F27F37C5D001F02C8 /* insertion_sort.c */,
 				2A91A72B27F35DF3001F02C8 /* utils.c */,
 				2A91A72027F34D29001F02C8 /* test */,
-				2A91A6FF27F34225001F02C8 /* sorting_old */,
 			);
 			path = sorting;
-			sourceTree = "<group>";
-		};
-		2A91A6FF27F34225001F02C8 /* sorting_old */ = {
-			isa = PBXGroup;
-			children = (
-				2A91A70027F34225001F02C8 /* hash_sort.c */,
-				2A91A70127F34225001F02C8 /* verification.c */,
-				2A91A70227F34225001F02C8 /* bubble_sort.c */,
-				2A91A70327F34225001F02C8 /* merge_sort.c */,
-				2A91A70427F34225001F02C8 /* heap_sort.c */,
-				2A91A70527F34225001F02C8 /* include */,
-				2A91A70927F34225001F02C8 /* sort_results.txt */,
-				2A91A70A27F34225001F02C8 /* int_sort */,
-				2A91A70B27F34225001F02C8 /* quick_sort.c */,
-				2A91A70C27F34225001F02C8 /* main.c */,
-				2A91A70D27F34225001F02C8 /* int_sort.dSYM */,
-				2A91A70E27F34225001F02C8 /* swap.c */,
-				2A91A70F27F34225001F02C8 /* selection_sort.c */,
-				2A91A71027F34225001F02C8 /* test_sorts.sh */,
-				2A91A71127F34225001F02C8 /* insertion_sort.c */,
-			);
-			path = sorting_old;
-			sourceTree = SOURCE_ROOT;
-		};
-		2A91A70527F34225001F02C8 /* include */ = {
-			isa = PBXGroup;
-			children = (
-				2A91A70627F34225001F02C8 /* swap.h */,
-				2A91A70727F34225001F02C8 /* sorting.h */,
-				2A91A70827F34225001F02C8 /* verification.h */,
-			);
-			path = include;
 			sourceTree = "<group>";
 		};
 		2A91A71D27F34D29001F02C8 /* include */ = {

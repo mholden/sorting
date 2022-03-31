@@ -11,7 +11,7 @@ test_sorts: test_sorts.c ../utils.c ../selection_sort.c ../tree_sort.c ../insert
 		../quick_sort.c ../merge_sort.c ../heap_sort.c
 	$(CC) $(CFLAGS) $(INCLUDES) test_sorts.c ../utils.c ../selection_sort.c ../tree_sort.c \
 		$(DS)/avl_trees/avl_tree.c $(DS)/hash_tables/hash_table.c $(DS)/linked_lists/linked_list.c  \
-		../insertion_sort.c ../quick_sort.c ../merge_sort.c ../heap_sort.c -o test_sorts
+		../insertion_sort.c ../quick_sort.c ../merge_sort.c ../heap_sort.c -pthread -o test_sorts
 
 clean:
 	rm *o test_sorts

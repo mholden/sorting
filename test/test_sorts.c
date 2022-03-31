@@ -103,6 +103,31 @@ void do_quick_sort(test_sorts_data_t *tsd, int n) {
     free(_tsd);
 }
 
+void do_quick_sort_mt(test_sorts_data_t *tsd, int n) {
+    test_sorts_data_t *_tsd;
+    struct timespec tstart, tend;
+    double tm;
+    
+    assert(_tsd = malloc(sizeof(test_sorts_data_t) * n));
+    memcpy(_tsd, tsd, sizeof(test_sorts_data_t) * n);
+    
+    //test_sorts_dump_data(_tsd, n);
+    
+    printf("quick sort mt...");
+    
+    clock_gettime(CLOCK_MONOTONIC, &tstart);
+    assert(quick_sort_mt((void *)_tsd, sizeof(test_sorts_data_t), n, &test_sorts_ops) == 0);
+    clock_gettime(CLOCK_MONOTONIC, &tend);
+    tm = diff_timespec(tend, tstart);
+    
+    verify(_tsd, n);
+    //test_sorts_dump_data(_tsd, n);
+    
+    printf("\rquick sort mt: %fs\n", tm);
+    
+    free(_tsd);
+}
+
 void do_tree_sort(test_sorts_data_t *tsd, int n) {
     test_sorts_data_t *_tsd;
     struct timespec tstart, tend;
@@ -174,6 +199,31 @@ void do_merge_sort(test_sorts_data_t *tsd, int n) {
     //test_sorts_dump_data(_tsd, n);
     
     printf("\rmerge sort: %fs\n", tm);
+    
+    free(_tsd);
+}
+
+void do_merge_sort_mt(test_sorts_data_t *tsd, int n) {
+    test_sorts_data_t *_tsd;
+    struct timespec tstart, tend;
+    double tm;
+    
+    assert(_tsd = malloc(sizeof(test_sorts_data_t) * n));
+    memcpy(_tsd, tsd, sizeof(test_sorts_data_t) * n);
+    
+    //test_sorts_dump_data(_tsd, n);
+    
+    printf("merge sort mt...");
+    
+    clock_gettime(CLOCK_MONOTONIC, &tstart);
+    assert(merge_sort_mt((void *)_tsd, sizeof(test_sorts_data_t), n, &test_sorts_ops) == 0);
+    clock_gettime(CLOCK_MONOTONIC, &tend);
+    tm = diff_timespec(tend, tstart);
+    
+    verify(_tsd, n);
+    //test_sorts_dump_data(_tsd, n);
+    
+    printf("\rmerge sort mt: %fs\n", tm);
     
     free(_tsd);
 }
@@ -261,10 +311,13 @@ void do_sorts(int n) {
     //printf("retries %u\n", retries);
     
     do_stdlib_quick_sort(tsd, n); // n*logn
+    do_merge_sort_mt(tsd, n); // n*logn
     do_merge_sort(tsd, n); // n*logn
+
+    do_quick_sort_mt(tsd, n); // n*logn
     do_quick_sort(tsd, n); // n*logn
-    do_heap_sort(tsd, n); // n*logn
-    do_tree_sort(tsd, n); // n*logn
+    //do_heap_sort(tsd, n); // n*logn
+    //do_tree_sort(tsd, n); // n*logn
     //do_selection_sort(tsd, n); // n^2
     //do_insertion_sort(tsd, n); // n^2
     
